@@ -43,11 +43,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         actions: [
-          defaultTextButton(
-              function:(){
-                navigateAndFinish(context, HomeScreen());
-              },
-              text: 'skip',
+          // defaultTextButton(
+          //     function:(){
+          //       navigateAndFinish(context, HomeScreen());
+          //     },
+          //     text: 'skip',
+          // )
+          IconButton(
+            onPressed: (){
+            navigateAndFinish(context, HomeScreen());
+          },
+            icon: Icon(Icons.library_music_outlined,size: 35.0,),
+            color: defaultColor,
+
           )
         ],
       ),

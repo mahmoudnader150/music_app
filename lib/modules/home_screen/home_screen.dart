@@ -14,6 +14,10 @@ class HomeScreen extends StatelessWidget {
         builder: (context, state) {
          var  cubit = HomeCubit.get(context);
           return Scaffold(
+            appBar: AppBar(
+              backgroundColor: defaultColor,
+             title:  Center(child: Text(cubit.titles[cubit.currentIndex]))
+            ),
             body: cubit.screens[cubit.currentIndex],
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,

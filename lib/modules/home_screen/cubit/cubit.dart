@@ -16,6 +16,11 @@ class HomeCubit extends Cubit<HomeStates> {
     FavouritesScreen(),
     SettingsScreen()
   ];
+  List<String> titles=[
+    "Sama3a",
+    "Favourites",
+    "Settings"
+  ];
   int currentIndex = 0;
   void changeIndex(index){
     currentIndex = index;

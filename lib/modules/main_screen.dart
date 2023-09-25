@@ -16,7 +16,6 @@ class MainScreen extends StatelessWidget {
         builder:(context,state) {
         return Scaffold(
           body: Text("fasdf"),
-
         );
       }
     );
