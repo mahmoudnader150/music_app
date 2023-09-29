@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:music_app/constants.dart';
 
 Widget defaultTextButton({
@@ -14,3 +15,22 @@ void navigateAndFinish(context,widget)=> Navigator.pushAndRemoveUntil(
   ),
       (route)=>false,
 );
+void navigateTo(context,widget)=> Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) =>widget
+    )
+);
+
+void showToast({
+  required String text,
+})=>
+    Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 5,
+        backgroundColor:  defaultColor,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/models/music_model.dart';
 import 'package:music_app/modules/favourites_screen.dart';
 import 'package:music_app/modules/home_screen/cubit/states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,11 @@ import 'package:music_app/modules/settings_screen.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() :super(HomeInitialState());
-
+  bool isDark = false;
+  void changeAppMode({bool? fromShared}){
+    isDark = !isDark;
+    emit(HomeChangeModeState());
+  }
   static HomeCubit get(context) => BlocProvider.of(context);
 
   List<Widget> screens = [
@@ -17,8 +22,8 @@ class HomeCubit extends Cubit<HomeStates> {
     SettingsScreen()
   ];
   List<String> titles=[
-    "Sama3a",
-    "Favourites",
+    " Music",
+    "Your Favourites",
     "Settings"
   ];
   int currentIndex = 0;
@@ -41,4 +46,17 @@ class HomeCubit extends Cubit<HomeStates> {
     ),
 
   ];
+
+  List<Music> favorites = [];
+  void changeFavorites(Music music) {
+
+    if(favorites.contains(music)) {
+        favorites.remove(music);
+      }
+    else {
+        favorites.add(music);
+      }
+    emit(HomeChangeFavoritesState());
+  }
+
 }

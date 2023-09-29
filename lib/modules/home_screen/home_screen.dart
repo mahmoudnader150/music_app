@@ -15,8 +15,14 @@ class HomeScreen extends StatelessWidget {
          var  cubit = HomeCubit.get(context);
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: defaultColor,
-             title:  Center(child: Text(cubit.titles[cubit.currentIndex]))
+
+              actions: [
+                IconButton(onPressed: (){
+                  HomeCubit.get(context).changeAppMode();
+                }, icon: Icon(Icons.sunny_snowing))
+              ],
+             title:  Center(child: Text(cubit.titles[cubit.currentIndex])),
+              elevation: 0.0,
             ),
             body: cubit.screens[cubit.currentIndex],
             bottomNavigationBar: BottomNavigationBar(
