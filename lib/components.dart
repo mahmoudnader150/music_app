@@ -34,3 +34,50 @@ void showToast({
         textColor: Colors.white,
         fontSize: 16.0
     );
+
+
+
+Widget defaultFormField({
+  required TextEditingController controller,
+  required TextInputType type,
+  ValueChanged<String>? onSubmit,
+  ValueChanged<String>? onChange,
+  required String?Function(String?) validate,
+  required String label,
+  required IconData prefix,
+  bool obscure = false,
+  VoidCallback? onTap,
+  bool isClickable = true,
+  IconData? suffix ,
+  void Function()?  suffixPressed
+})=>TextFormField(
+  controller: controller,
+  keyboardType: type,
+  onFieldSubmitted: onSubmit,
+  onChanged: onChange ,
+  validator: validate ,
+  obscureText: obscure,
+  cursorColor: defaultColor,
+  onTap: onTap,
+  enabled: isClickable,
+  decoration: InputDecoration(
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: defaultColor), // Border color when not focused
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: defaultColor), // Border color when focused
+    ),
+    labelText: label,
+    labelStyle: TextStyle(
+      color: defaultColor
+    ),
+
+    suffixIcon: IconButton(
+      icon: Icon(suffix),
+      onPressed: suffixPressed,
+    ),
+    prefixIcon: Icon(prefix,color: defaultColor,),
+    border: OutlineInputBorder(
+    ),
+  ),
+);

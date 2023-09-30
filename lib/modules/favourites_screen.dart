@@ -17,7 +17,8 @@ class FavouritesScreen extends StatelessWidget {
 
         builder:(context,state) {
           print(HomeCubit.get(context).favorites);
-          return Scaffold(
+          return (HomeCubit.get(context).favorites.length>0)?
+                Scaffold(
               body:ListView.separated(
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) => buildMusicItem(HomeCubit.get(context).favorites[index],context,index,HomeCubit.get(context).favorites),
@@ -35,7 +36,29 @@ class FavouritesScreen extends StatelessWidget {
                     ),
                 itemCount: (HomeCubit.get(context).favorites.length),
               )
-          );
+          ):
+                Scaffold(
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                            Icons.error_outline,
+                          color:  Colors.grey[600],
+                          size: 100,
+                        ),
+                        Text(
+                            "No Songs added to favourites yet",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.grey[600]
+                            ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
         }
     );
   }

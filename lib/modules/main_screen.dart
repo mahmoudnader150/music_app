@@ -59,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
         builder:(context,state) {
           print(myList);
         return Scaffold(
-          body:ListView.separated(
+          body:  ListView.separated(
             physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) => buildMusicItem(myList[index],context,index,myList),
             separatorBuilder: (context, index) =>
@@ -75,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
             itemCount: (myList.length),
-             )
+          ),
           );
       }
     );
