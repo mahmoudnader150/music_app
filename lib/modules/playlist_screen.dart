@@ -27,10 +27,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         listener: (context,state){},
 
         builder:(context,state) {
-          print(HomeCubit.get(context).favorites);
-          return  Scaffold(
+
+          return Scaffold(
             key:  scaffoldKey,
-            body: ListView.separated(
+            body: (HomeCubit.get(context).myPlaylists.length>0)?ListView.separated(
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) => buildPlaylistItem(HomeCubit.get(context).myPlaylists[index],context),
               separatorBuilder: (context, index) =>
@@ -46,6 +46,25 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     ),
                   ),
               itemCount: (HomeCubit.get(context).myPlaylists.length),
+            ): Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color:  Colors.grey[600],
+                    size: 100,
+                  ),
+                  Text(
+                    "No Playlists added yet",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.grey[600]
+                    ),
+                  )
+                ],
+              ),
             ),
             floatingActionButton: FloatingActionButton(
               child :Icon(
@@ -130,7 +149,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               Spacer(),
               IconButton(
                   onPressed: (){
-                    HomeCubit.get(context
+                    HomeCubit.get(context).deletePlaylist(playlist);
+                    showToast(text:"Deleted Successfully");
                   },
                   icon: CircleAvatar(
                     radius: 15.0,

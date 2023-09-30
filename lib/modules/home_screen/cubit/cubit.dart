@@ -74,6 +74,10 @@ class HomeCubit extends Cubit<HomeStates> {
      myPlaylists.add(Playlist(name: name));
      emit(HomeAddPlaylist());
   }
+  void deletePlaylist(Playlist playlist){
+    myPlaylists.remove(playlist);
+    emit(HomeRemovePlaylist());
+  }
 
   IconData fabIcon = Icons.add;
   bool isBottomSheetShown = false;

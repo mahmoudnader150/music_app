@@ -7,3 +7,4 @@ class HomeChangeModeState extends HomeStates{}
 class HomeChangeFavoritesState extends HomeStates{}
 class HomeChangeBottomSheetState extends HomeStates{}
 class HomeAddPlaylist extends HomeStates{}
+class HomeRemovePlaylist extends HomeStates{}
