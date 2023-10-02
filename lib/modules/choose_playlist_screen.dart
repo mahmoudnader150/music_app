@@ -9,18 +9,10 @@ import 'package:music_app/modules/home_screen/cubit/states.dart';
 import 'package:music_app/modules/play_music_screen.dart';
 import 'package:music_app/modules/playlist_songs_screen.dart';
 
-class PlaylistScreen extends StatefulWidget {
+class ChoosePlaylistScreen extends StatelessWidget {
 
-  @override
-  State<PlaylistScreen> createState() => _PlaylistScreenState();
-}
-
-class _PlaylistScreenState extends State<PlaylistScreen> {
-  var formKey = GlobalKey<FormState>();
-
-  var scaffoldKey = GlobalKey<ScaffoldState>();
-
-  var nameController = TextEditingController();
+ final Music music;
+ ChoosePlaylistScreen({required this.music});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +22,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         builder:(context,state) {
 
           return Scaffold(
-            key:  scaffoldKey,
+            appBar: AppBar(
+              title: Text("Playlist available"),
+            ),
             body: (HomeCubit.get(context).myPlaylists.length>0)?ListView.separated(
               physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) => buildPlaylistItem(HomeCubit.get(context).myPlaylists[index],index,context),
+              itemBuilder: (context, index) => buildPlaylistItem(HomeCubit.get(context).myPlaylists[index],music,index,context),
               separatorBuilder: (context, index) =>
                   Padding
                     (
@@ -67,65 +61,17 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 ],
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              child :Icon(
-                 HomeCubit.get(context).fabIcon
-              ),
-              backgroundColor: defaultColor,
-              onPressed:  (){
-                if(HomeCubit.get(context).isBottomSheetShown){
-                  if(formKey.currentState!.validate()){
-                    HomeCubit.get(context).addPlaylist(nameController.text);
-                    showToast(text: "Added Successfully");
-                  }
-                }else{
-                  scaffoldKey.currentState?.showBottomSheet((context)=>
-                      Container(
-                        color: Colors.grey[400],
-                        padding: EdgeInsets.all(20.0),
-                        child: Form(
-                          key: formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              defaultFormField(
-                                  controller: nameController,
-                                  type: TextInputType.text,
-                                  validate: (value){
-                                    if(value!.isEmpty){
-                                      return 'Name must not be empty';
-                                    }
-                                    return null;
-                                  },
-                                  label: 'Playlist Name',
-                                  prefix: Icons.title
-                              ),
-                              SizedBox(height: 15.0),
 
-                            ],
-                          ),
-                        ),
-                      ),
-                    elevation: 15.0,
-                    backgroundColor: Colors.black
-                  ).closed.then((value){
-                    HomeCubit.get(context).changeButtomSheetState(isShow: false, icon: Icons.add);
-                  });
-                  HomeCubit.get(context).changeButtomSheetState(isShow: true, icon: Icons.add);
-                }
-
-              },
-            ),
           );
         }
     );
   }
 
-  Widget buildPlaylistItem(Playlist playlist,int playlistIndex,context){
-
+  Widget buildPlaylistItem(Playlist playlist,Music music,int playlistIndex,context){
     return InkWell(
       onTap: (){
-          navigateTo(context, PlaylistSongsScreen(playlistIndex: playlistIndex));
+         playlist.songs.add(music);
+         showToast(text: "${music.name} added to ${playlist.name}");
       },
       child: Container(
         child: Padding(
@@ -145,7 +91,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     style:Theme.of(context).textTheme.headline6?.copyWith(
                         color: (HomeCubit.get(context).isDark)?(Colors.white):Colors.black
                     ) ,
-
                   ),
                   SizedBox(height: 5.0,),
                 ],

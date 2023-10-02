@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_app/components.dart';
 import 'package:music_app/constants.dart';
 import 'package:music_app/models/music_model.dart';
+import 'package:music_app/modules/choose_playlist_screen.dart';
 import 'package:music_app/modules/home_screen/cubit/cubit.dart';
 import 'package:music_app/modules/home_screen/cubit/states.dart';
 import 'package:music_app/modules/home_screen/home_screen.dart';
@@ -148,10 +149,18 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                     ),
                     Spacer(),
                     IconButton(
-                        onPressed: (){},
-                        icon: Icon(
-                          Icons.add,
-                        ),
+                        onPressed: (){
+                          navigateTo(context, ChoosePlaylistScreen( music: widget.music,));
+                        },
+                        icon: CircleAvatar(
+                          radius: 15.0,
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            Icons.add,
+                            size: 18.0,
+                            color: Colors.black,
+                          ),
+                        )
                     ),
                   ],
                 ),
@@ -167,7 +176,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                           progressBarColor: defaultColor,
                           thumbColor: defaultColor,
                           timeLabelTextStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color:(HomeCubit.get(context).isDark==false)?Colors.black:Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.w600
                           ),
                           progress: positionData?.position??Duration.zero,

@@ -3,25 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_app/components.dart';
 import 'package:music_app/constants.dart';
 import 'package:music_app/models/music_model.dart';
+import 'package:music_app/models/playlist_model.dart';
 import 'package:music_app/modules/home_screen/cubit/cubit.dart';
 import 'package:music_app/modules/home_screen/cubit/states.dart';
 import 'package:music_app/modules/play_music_screen.dart';
 
-class FavouritesScreen extends StatelessWidget {
-  const FavouritesScreen({super.key});
+class PlaylistSongsScreen extends StatelessWidget {
+  final int playlistIndex;
+  PlaylistSongsScreen({required this.playlistIndex});
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit,HomeStates>(
         listener: (context,state){},
-
         builder:(context,state) {
           print(HomeCubit.get(context).favorites);
-          return (HomeCubit.get(context).favorites.length>0)?
-                Scaffold(
+          return (HomeCubit.get(context).myPlaylists[playlistIndex].songs.length>0)?
+          Scaffold(
+            appBar: AppBar(
+              title: Text(HomeCubit.get(context).myPlaylists[playlistIndex].name),
+            ),
               body:ListView.separated(
                 physics: BouncingScrollPhysics(),
-                itemBuilder: (context, index) => buildMusicItem(HomeCubit.get(context).favorites[index],context,index,HomeCubit.get(context).favorites),
+                itemBuilder: (context, index) => buildMusicItem(HomeCubit.get(context).myPlaylists[playlistIndex].songs[index],context,index,HomeCubit.get(context).myPlaylists[playlistIndex],HomeCubit.get(context).myPlaylists[playlistIndex].songs),
                 separatorBuilder: (context, index) =>
                     Padding
                       (
@@ -34,37 +38,38 @@ class FavouritesScreen extends StatelessWidget {
                         color: Colors.grey[300],
                       ),
                     ),
-                itemCount: (HomeCubit.get(context).favorites.length),
+                itemCount: (HomeCubit.get(context).myPlaylists[playlistIndex].songs.length),
               )
           ):
-                Scaffold(
-                  body: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                            Icons.error_outline,
-                          color:  Colors.grey[600],
-                          size: 100,
-                        ),
-                        Text(
-                            "No Songs added to favourites yet",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.grey[600]
-                            ),
-                        )
-                      ],
-                    ),
+          Scaffold(
+            appBar: AppBar(
+              title: Text(HomeCubit.get(context).myPlaylists[playlistIndex].name),
+            ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color:  Colors.grey[600],
+                    size: 100,
                   ),
-                );
+                  Text(
+                    "No Songs added to this playlist yet",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.grey[600]
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
         }
     );
   }
-
-
-  Widget buildMusicItem(Music model,context,int index, List<Music> myList){
+  Widget buildMusicItem(Music model,context,int index,Playlist playlist ,List<Music> myList){
 
     return InkWell(
       onTap: (){
@@ -89,6 +94,7 @@ class FavouritesScreen extends StatelessWidget {
                     style:Theme.of(context).textTheme.headline6?.copyWith(
                         color: (HomeCubit.get(context).isDark)?(Colors.white):Colors.black
                     ) ,
+
                   ),
                   SizedBox(height: 5.0,),
                   Text(
@@ -104,21 +110,13 @@ class FavouritesScreen extends StatelessWidget {
               Spacer(),
               IconButton(
                   onPressed: (){
-                    HomeCubit.get(context).changeFavorites(model);
-                    if(HomeCubit.get(context).favorites.contains(model)){
-                      showToast(text: "Added to favourites");
-                    }else{
-                      showToast(text: "Removed from favourites");
-                    }
+                    HomeCubit.get(context).removeSongFromPlaylist( playlist, model);
                   },
                   icon: CircleAvatar(
                     radius: 15.0,
-                    backgroundColor:
-                    ( HomeCubit.get(context).favorites.contains(model))?
-                    defaultColor:
-                    Colors.white,
+                    backgroundColor: Colors.white,
                     child: Icon(
-                      Icons.favorite_border,
+                      Icons.minimize_sharp,
                       size: 18.0,
                       color: Colors.black,
                     ),
@@ -130,4 +128,5 @@ class FavouritesScreen extends StatelessWidget {
       ),
     );
   }
+
 }

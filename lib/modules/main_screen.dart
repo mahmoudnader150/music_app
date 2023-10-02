@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_app/components.dart';
 import 'package:music_app/constants.dart';
 import 'package:music_app/models/music_model.dart';
+import 'package:music_app/modules/choose_playlist_screen.dart';
 import 'package:music_app/modules/home_screen/cubit/cubit.dart';
 import 'package:music_app/modules/home_screen/cubit/states.dart';
 import 'package:just_audio/just_audio.dart';
@@ -104,8 +105,9 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   Text(
                     model.name,
-                    style:Theme.of(context).textTheme.headline6 ,
-
+                    style:Theme.of(context).textTheme.headline6?.copyWith(
+                      color: (HomeCubit.get(context).isDark)?(Colors.white):Colors.black
+                    ) ,
 
                   ),
                   SizedBox(height: 5.0,),
@@ -120,6 +122,20 @@ class _MainScreenState extends State<MainScreen> {
                 ],
               ),
               Spacer(),
+              IconButton(
+                  onPressed: (){
+                      navigateTo(context, ChoosePlaylistScreen( music: model,));
+                  },
+                  icon: CircleAvatar(
+                    radius: 15.0,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.add,
+                      size: 18.0,
+                      color: Colors.black,
+                    ),
+                  )
+              ),
               IconButton(
                   onPressed: (){
                     HomeCubit.get(context).changeFavorites(model);
@@ -141,7 +157,10 @@ class _MainScreenState extends State<MainScreen> {
                       color: Colors.black,
                     ),
                   )
-              )
+              ),
+
+
+
             ],
           ),
         ),

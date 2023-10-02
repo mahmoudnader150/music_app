@@ -23,13 +23,13 @@ class HomeCubit extends Cubit<HomeStates> {
       MainScreen(),
     FavouritesScreen(),
     PlaylistScreen(),
-    SettingsScreen(),
+
   ];
   List<String> titles=[
     "Music",
     "Your Favourites",
     "Playlists",
-    "Settings",
+
   ];
   int currentIndex = 0;
   void changeIndex(index){
@@ -49,10 +49,7 @@ class HomeCubit extends Cubit<HomeStates> {
         icon: Icon(Icons.list),
         label: 'Playlists'
     ),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
-        label: 'Settings'
-    ),
+
 
   ];
 
@@ -76,6 +73,11 @@ class HomeCubit extends Cubit<HomeStates> {
   }
   void deletePlaylist(Playlist playlist){
     myPlaylists.remove(playlist);
+    emit(HomeRemovePlaylist());
+  }
+
+  void removeSongFromPlaylist(Playlist playlist,Music song){
+    playlist.songs.remove(song);
     emit(HomeRemovePlaylist());
   }
 
